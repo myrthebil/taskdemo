@@ -10,7 +10,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import org.springframework.data.annotation.Id;
 
-import java.util.Set;
+import java.util.List;
 
 @Entity
 public class User extends Auditable<String> {
@@ -25,7 +25,7 @@ public class User extends Auditable<String> {
     @OneToMany
     @JoinColumn(name = "user_id")
     @JsonManagedReference
-    private Set<Task> ownedTasks;
+    private List<Task> ownedTasks;
 
     @ManyToMany
     @JoinTable(
@@ -33,13 +33,13 @@ public class User extends Auditable<String> {
             joinColumns={@JoinColumn(name="user_id")},
             inverseJoinColumns={@JoinColumn(name="task_id")}
     )
-    private Set<Task> assignedTasks;
+    private List<Task> assignedTasks;
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(final int id) {
         this.id = id;
     }
 
@@ -47,23 +47,23 @@ public class User extends Auditable<String> {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(final String username) {
         this.username = username;
     }
 
-    public Set<Task> getOwnedTasks() {
+    public List<Task> getOwnedTasks() {
         return ownedTasks;
     }
 
-    public void setOwnedTasks(Set<Task> ownedTasks) {
+    public void setOwnedTasks(final List<Task> ownedTasks) {
         this.ownedTasks = ownedTasks;
     }
 
-    public Set<Task> getAssignedTasks() {
+    public List<Task> getAssignedTasks() {
         return assignedTasks;
     }
 
-    public void setAssignedTasks(Set<Task> assignedTasks) {
+    public void setAssignedTasks(final List<Task> assignedTasks) {
         this.assignedTasks = assignedTasks;
     }
 }

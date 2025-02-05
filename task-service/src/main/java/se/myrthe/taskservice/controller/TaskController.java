@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 import se.myrthe.commonmodel.model.Task;
 import se.myrthe.commonmodel.model.User;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class TaskController {
@@ -17,8 +17,8 @@ public class TaskController {
     private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
 
     @PostMapping("/tasks")
-    public Set<Task> getOwnedTasks(@RequestBody final User user) {
+    public List<Task> getOwnedTasks(@RequestBody final User user) {
         logger.info("Collecting tasks for user {}", user.getUsername());
-        return new HashSet<>();
+        return new ArrayList<>();
     }
 }
