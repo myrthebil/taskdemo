@@ -1,9 +1,13 @@
 # Read Me First
 The following was discovered as part of building this project:
 
-* No Docker Compose services found. As of now, the application won't start! Please add at least one service to the `docker-compose.yaml` file.
+* The `docker-compose.yaml` file contains 3 services
+  * postgres
+  * task-service
+  * user-service
 
 # Getting Started
+TODO: provide information about the docker and maven setup
 
 ### Reference Documentation
 For further reference, please consider the following sections:
