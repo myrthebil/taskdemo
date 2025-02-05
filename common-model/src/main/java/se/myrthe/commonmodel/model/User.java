@@ -23,7 +23,7 @@ public class User extends Auditable<String> {
 
     @ManyToMany
     @JoinTable(
-            name="assigned_tasks_user",
+            name="assigned_task_user",
             joinColumns={@JoinColumn(name="user_id")},
             inverseJoinColumns={@JoinColumn(name="task_id")}
     )
