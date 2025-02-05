@@ -8,7 +8,6 @@
         <outputRelativeToContentRoot value="true" />
         <module name="task-service" />
         <module name="user-service" />
-        <module name="task-demo" />
         <module name="common-model" />
       </profile>
     </annotationProcessing>
@@ -21,6 +20,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="common-model" options="-parameters" />
       <module name="common-module" options="-parameters" />
       <module name="task-service" options="-parameters" />
       <module name="taskdemo" options="-parameters" />
