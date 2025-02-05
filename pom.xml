@@ -7,6 +7,12 @@
   <version>1.0.0</version>
   <name>task-demo</name>
   <url>http://maven.apache.org</url>
+  <licenses>
+    <license/>
+  </licenses>
+  <developers>
+    <developer/>
+  </developers>
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>

@@ -1,7 +1,7 @@
 # Read Me First
 The following was discovered as part of building this project:
 
-* No Docker Compose services found. As of now, the application won't start! Please add at least one service to the `compose.yaml` file.
+* No Docker Compose services found. As of now, the application won't start! Please add at least one service to the `docker-compose.yaml` file.
 
 # Getting Started
 
@@ -33,11 +33,11 @@ The following guides illustrate how to use some features concretely:
 * [Building a RESTful Web Service with Spring Boot Actuator](https://spring.io/guides/gs/actuator-service/)
 
 ### Docker Compose support
-This project contains a Docker Compose file named `compose.yaml`.
+This project contains a Docker Compose file named `docker-compose.yaml`.
 
 However, no services were found. As of now, the application won't start!
 
-Please make sure to add at least one service in the `compose.yaml` file.
+Please make sure to add at least one service in the `docker-compose.yaml` file.
 
 ### Maven Parent overrides
 
