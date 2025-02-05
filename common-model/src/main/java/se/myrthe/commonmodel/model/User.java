@@ -4,20 +4,22 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.Table;
 
 import java.util.List;
 
 @Entity
+@Table(name = "users")
 public class User extends Auditable<String> {
 
     @Id
     @GeneratedValue
-    @Column(columnDefinition = "user_id", name = "user_id")
+    @Column(name = "user_id")
     private int id;
 
     private String username;

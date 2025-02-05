@@ -1,13 +1,14 @@
 package se.myrthe.commonmodel.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import org.springframework.data.annotation.Id;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class Task extends Auditable<String> {
 
     @Id
     @GeneratedValue
-    @Column(columnDefinition = "task_id", name = "task_id")
+    @Column(name = "task_id")
     private int id;
 
     private String name;
@@ -25,12 +26,12 @@ public class Task extends Auditable<String> {
 
     private TaskStatus taskStatus;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User taskOwner;
 
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(mappedBy = "assignedTasks")
     private List<User> assignedUsers;
 
     public int getId() {
@@ -79,5 +80,13 @@ public class Task extends Auditable<String> {
 
     public void setAssignedUsers(final List<User> assignedUsers) {
         this.assignedUsers = assignedUsers;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }
