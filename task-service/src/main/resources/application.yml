@@ -1,0 +1,14 @@
+logging:
+  level:
+    web: DEBUG
+    org.springframework.web: DEBUG
+    se.myrthe: TRACE
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/mydatabase
+    username: myuser
+    password: mypassword
+    platform: postgresql
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
