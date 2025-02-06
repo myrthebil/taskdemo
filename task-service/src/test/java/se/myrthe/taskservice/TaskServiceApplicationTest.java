@@ -9,7 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import se.myrthe.taskservice.repository.TaskRepository;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -25,9 +24,6 @@ public class TaskServiceApplicationTest {
 
     @Autowired
     private MockMvc mvc;
-
-    @Autowired
-    private TaskRepository repository;
 
     @Test
     public void testApplicationStartup() {
