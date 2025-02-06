@@ -17,10 +17,9 @@ import java.util.List;
 @RestController
 public class TaskController {
 
+    private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
     @Autowired
     private TaskService service;
-
-    private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
 
     @PostMapping("/task")
     public void createTask(@RequestBody final Task task) {
@@ -31,11 +30,11 @@ public class TaskController {
 
     @PostMapping("/tasks")
     public List<Task> getOwnedTasks(@RequestBody final User user) {
-        if(user == null) {
+        if (user == null) {
             logger.error("Missing user information, request body is empty");
             throw new InvalidRequestBodyException("Missing value for user in request body");
         }
-        if(user.getUsername() == null) {
+        if (user.getUsername() == null) {
             logger.error("Missing username in request body");
             throw new InvalidRequestBodyException("Missing value for user in request body");
         }

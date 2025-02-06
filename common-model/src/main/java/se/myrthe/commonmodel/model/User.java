@@ -31,9 +31,9 @@ public class User extends Auditable<String> {
 
     @ManyToMany
     @JoinTable(
-            name="assigned_task_user",
-            joinColumns={@JoinColumn(name="user_id")},
-            inverseJoinColumns={@JoinColumn(name="task_id")}
+            name = "assigned_task_user",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "task_id")}
     )
     private List<Task> assignedTasks;
 
