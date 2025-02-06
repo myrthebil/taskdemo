@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         classes = TaskServiceApplication.class)
 @AutoConfigureMockMvc
 @TestPropertySource(
-        properties = {"spring.config.location=classpath:application-integrationtest.yml"})
+        properties = {"spring.config.location=classpath:application-integration-test.yml"})
 public class TaskServiceApplicationTest {
 
     @Autowired
