@@ -1,0 +1,11 @@
+{
+  "id": 1,
+  "name": "send an owl",
+  "description": "remind Hermione to send an owl to Mad Eye Moody",
+  "taskStatus": "TODO",
+  "assignedUsers": "Ron",
+  "taskOwner": {
+    "username": "Harry",
+    "userId": 1
+  }
+}

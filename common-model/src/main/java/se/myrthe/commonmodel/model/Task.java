@@ -1,6 +1,7 @@
 package se.myrthe.commonmodel.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,6 +15,16 @@ import java.util.List;
 
 @Entity
 public class Task extends Auditable<String> {
+
+    private Task() {
+    }
+
+    private Task(final TaskBuilder builder) {
+        this.name = builder.name;
+        this.description = builder.description;
+        this.taskStatus = builder.taskStatus;
+        this.taskOwner = builder.taskOwner;
+    }
 
     @Id
     @GeneratedValue
@@ -84,9 +95,39 @@ public class Task extends Auditable<String> {
 
     @Override
     public String toString() {
-        return "Task{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+        return "Task{" + "name='" + name + '\'' + ", description='" + description + '\'' + '}';
     }
+
+    public static class TaskBuilder {
+
+        private String name;
+        private String description;
+        private TaskStatus taskStatus;
+        private User taskOwner;
+
+        public TaskBuilder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public TaskBuilder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public TaskBuilder setTaskStatus(TaskStatus taskStatus) {
+            this.taskStatus = taskStatus;
+            return this;
+        }
+
+        public TaskBuilder setTaskOwner(User taskOwner) {
+            this.taskOwner = taskOwner;
+            return this;
+        }
+
+        public Task build() {
+            return new Task(this);
+        }
+    }
+
 }

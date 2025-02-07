@@ -12,6 +12,7 @@ public class TaskService {
     private TaskRepository repository;
 
     public Task create(final Task task) {
+        task.setCreatedBy(task.getTaskOwner().getUsername());
         return repository.save(task);
     }
 }

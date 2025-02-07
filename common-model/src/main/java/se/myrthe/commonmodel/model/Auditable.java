@@ -76,12 +76,7 @@ public abstract class Auditable<T> {
     public T getLastModifiedBy() {
         return lastModifiedBy;
     }
-
-    /**
-     * Sets the user responsible for the last update of the entity.
-     *
-     * @param lastModifiedBy the user who last modified the entity
-     */
+    
     public void setLastModifiedBy(final T lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
     }
