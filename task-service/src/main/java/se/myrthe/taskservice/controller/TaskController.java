@@ -22,10 +22,11 @@ public class TaskController {
     private TaskService service;
 
     @PostMapping("/task")
-    public void createTask(@RequestBody final Task task) {
+    public Task createTask(@RequestBody final Task task) {
         logger.info("Creating task {} for user {}", task, task.getTaskOwner().getUsername());
         final Task createdTask = service.create(task);
         logger.info("Succesfully created a new task with id {}", createdTask.getId());
+        return createdTask;
     }
 
     @PostMapping("/tasks")
