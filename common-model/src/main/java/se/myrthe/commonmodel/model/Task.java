@@ -8,6 +8,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,12 +20,16 @@ public class Task extends Auditable<String> {
   @GeneratedValue
   @Column(name = "task_id")
   private int id;
+  @NotBlank(message = "Name is mandatory")
   private String name;
+  @NotBlank(message = "Description is mandatory")
   private String description;
+  @NotNull(message = "Task status is mandatory")
   private TaskStatus taskStatus;
   @ManyToOne
   @JoinColumn(name = "user_id")
   @JsonBackReference
+  @NotNull(message = "Task owner is mandatory")
   private User taskOwner;
   @ManyToMany(mappedBy = "assignedTasks")
   private List<User> assignedUsers;

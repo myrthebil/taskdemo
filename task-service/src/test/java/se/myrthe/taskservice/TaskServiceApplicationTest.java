@@ -78,7 +78,22 @@ public class TaskServiceApplicationTest {
     Assertions.assertEquals(1, resultTask.getAssignedUsers().size());
   }
 
-  private void createUsers() {
+  @Test
+  public void givenUserHarry_whenCreateCorruptTask_thenStatus400() throws Exception {
+    createUsers();
+
+    final String taskRequest = """
+        {
+          "invalidProperty": "A shrubbery!"
+        }
+        """;
+
+    mvc.perform(
+            post("/api/v1/task").content(taskRequest).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isBadRequest()).andReturn();
+
+  }
+    private void createUsers() {
     final User userHarry = new User();
     userHarry.setUsername("Harry");
 
