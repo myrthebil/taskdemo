@@ -21,6 +21,12 @@ import se.myrthe.commonmodel.model.TaskStatus;
 import se.myrthe.commonmodel.model.User;
 import se.myrthe.commonmodel.repository.UserRepository;
 
+/**
+ * This test contains a swift integration test using {@link MockMvc} to perform requests and resolve
+ * them to retrieve the response body. This performs an application startup and loads all required
+ * beans. We use a separate YAML to configure an in memory h2 database. Entities are created and
+ * dropped automatically.
+ */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = TaskServiceApplication.class)
 @AutoConfigureMockMvc
