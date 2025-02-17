@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -66,5 +67,35 @@ public class User extends Auditable<String> {
 
   public void setAssignedTasks(final List<Task> assignedTasks) {
     this.assignedTasks = assignedTasks;
+  }
+
+  @Override
+  public String toString() {
+    return "User{" +
+        "createdBy=" + createdBy +
+        ", id=" + id +
+        ", username='" + username + '\'' +
+        ", ownedTasks=" + ownedTasks +
+        ", assignedTasks=" + assignedTasks +
+        ", createdAt=" + createdAt +
+        ", lastModifiedBy=" + lastModifiedBy +
+        ", lastModifiedAt=" + lastModifiedAt +
+        '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    User user = (User) o;
+    return getId() == user.getId() && Objects.equals(getUsername(), user.getUsername())
+        && Objects.equals(getOwnedTasks(), user.getOwnedTasks())
+        && Objects.equals(getAssignedTasks(), user.getAssignedTasks());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getId(), getUsername(), getOwnedTasks(), getAssignedTasks());
   }
 }

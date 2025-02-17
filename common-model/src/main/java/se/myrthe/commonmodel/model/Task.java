@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Task extends Auditable<String> {
@@ -27,9 +28,6 @@ public class Task extends Auditable<String> {
   private User taskOwner;
   @ManyToMany(mappedBy = "assignedTasks")
   private List<User> assignedUsers;
-
-  private Task() {
-  }
 
   private Task(final TaskBuilder builder) {
     this.name = builder.name;
@@ -88,7 +86,36 @@ public class Task extends Auditable<String> {
 
   @Override
   public String toString() {
-    return "Task{" + "name='" + name + '\'' + ", description='" + description + '\'' + '}';
+    return "Task{" +
+        "id=" + id +
+        ", name='" + name + '\'' +
+        ", description='" + description + '\'' +
+        ", taskStatus=" + taskStatus +
+        ", taskOwner=" + taskOwner +
+        ", assignedUsers=" + assignedUsers +
+        ", createdBy=" + createdBy +
+        ", createdAt=" + createdAt +
+        ", lastModifiedBy=" + lastModifiedBy +
+        ", lastModifiedAt=" + lastModifiedAt +
+        '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Task task = (Task) o;
+    return getId() == task.getId() && Objects.equals(getName(), task.getName())
+        && Objects.equals(getDescription(), task.getDescription())
+        && getTaskStatus() == task.getTaskStatus() && Objects.equals(getTaskOwner(),
+        task.getTaskOwner()) && Objects.equals(getAssignedUsers(), task.getAssignedUsers());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getId(), getName(), getDescription(), getTaskStatus(), getTaskOwner(),
+        getAssignedUsers());
   }
 
   public static class TaskBuilder {
