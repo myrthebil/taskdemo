@@ -60,7 +60,7 @@ public class TaskServiceApplicationTest {
         """;
 
     MvcResult result = mvc.perform(
-            post("/task").content(taskRequest).contentType(MediaType.APPLICATION_JSON))
+            post("/api/v1/task").content(taskRequest).contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk()).andReturn();
 
     final Task resultTask = mapper.readValue(result.getResponse().getContentAsString(), Task.class);
