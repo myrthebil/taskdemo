@@ -17,21 +17,15 @@ import java.util.Objects;
 @Table(name = "users")
 public class User extends Auditable<String> {
 
-  public User() {
-  }
-
   @Id
   @GeneratedValue
   @Column(name = "user_id")
   private int id;
-
   private String username;
-
   @OneToMany
   @JoinColumn(name = "user_id")
   @JsonManagedReference
   private List<Task> ownedTasks;
-
   @ManyToMany
   @JoinTable(
       name = "assigned_task_user",
@@ -39,6 +33,9 @@ public class User extends Auditable<String> {
       inverseJoinColumns = {@JoinColumn(name = "task_id")}
   )
   private List<Task> assignedTasks;
+
+  public User() {
+  }
 
   public int getId() {
     return id;

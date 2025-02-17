@@ -16,7 +16,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.transaction.annotation.Transactional;
 import se.myrthe.commonmodel.model.Task;
 import se.myrthe.commonmodel.model.TaskStatus;
 import se.myrthe.commonmodel.model.User;
@@ -73,7 +72,6 @@ public class TaskServiceApplicationTest {
     Assertions.assertEquals(1, resultTask.getAssignedUsers().size());
   }
 
-  @Transactional
   private void createUsers() {
     final User userHarry = new User();
     userHarry.setUsername("Harry");

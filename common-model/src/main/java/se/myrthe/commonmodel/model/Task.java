@@ -1,7 +1,6 @@
 package se.myrthe.commonmodel.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,9 +13,6 @@ import java.util.Objects;
 
 @Entity
 public class Task extends Auditable<String> {
-
-  public Task() {
-  }
 
   @Id
   @GeneratedValue
@@ -31,6 +27,9 @@ public class Task extends Auditable<String> {
   private User taskOwner;
   @ManyToMany(mappedBy = "assignedTasks")
   private List<User> assignedUsers;
+
+  public Task() {
+  }
 
   private Task(final TaskBuilder builder) {
     this.name = builder.name;
