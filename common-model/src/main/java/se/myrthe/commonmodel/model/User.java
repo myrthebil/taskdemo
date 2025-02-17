@@ -17,6 +17,9 @@ import java.util.Objects;
 @Table(name = "users")
 public class User extends Auditable<String> {
 
+  public User() {
+  }
+
   @Id
   @GeneratedValue
   @Column(name = "user_id")

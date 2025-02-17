@@ -3,7 +3,7 @@ package se.myrthe.taskservice.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.myrthe.commonmodel.model.Task;
-import se.myrthe.taskservice.repository.TaskRepository;
+import se.myrthe.commonmodel.repository.TaskRepository;
 
 @Service
 public class TaskService {

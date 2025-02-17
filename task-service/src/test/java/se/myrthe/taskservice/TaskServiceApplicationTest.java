@@ -1,10 +1,11 @@
 package se.myrthe.taskservice;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.transaction.annotation.Transactional;
 import se.myrthe.commonmodel.model.Task;
+import se.myrthe.commonmodel.model.TaskStatus;
 import se.myrthe.commonmodel.model.User;
+import se.myrthe.commonmodel.repository.UserRepository;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = TaskServiceApplication.class)
@@ -28,6 +33,9 @@ public class TaskServiceApplicationTest {
   private MockMvc mvc;
 
   @Autowired
+  private UserRepository userRepository;
+
+  @Autowired
   private ObjectMapper mapper;
 
   @Test
@@ -36,22 +44,44 @@ public class TaskServiceApplicationTest {
   }
 
   @Test
-  public void givenUserHarry_whenCreateTask_thenStatus200() throws Exception {
-    final User user = new User();
-    user.setUsername("Harry");
-    final Task task = new Task.TaskBuilder()
-        .setTaskOwner(user)
-        .setName("send an owl")
-        .setDescription("remind Hermione to send an owl to Mad Eye Moody")
-        .build();
+  public void givenUserHarry_whenCreateTask_thenStatus200_andReturnsTask() throws Exception {
+    createUsers();
 
-    final String createTaskRequest = mapper.writeValueAsString(task);
+    final String taskRequest = """
+        {
+          "name": "send an owl",
+          "description": "remind Hermione to send an owl to Mad Eye Moody",
+          "taskStatus": "TODO",
+          "assignedUsers": [{"username": "Ron", "id": "2"}],
+          "taskOwner": {
+            "username": "Harry",
+            "id": 1
+          }
+        }
+        """;
 
-    mvc.perform(post("/task").content(createTaskRequest).contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
-        .andExpect(content()
-            // TODO: write expected string or find solution to make this readable
-            .string(""));
+    MvcResult result = mvc.perform(
+            post("/task").content(taskRequest).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk()).andReturn();
+
+    final Task resultTask = mapper.readValue(result.getResponse().getContentAsString(), Task.class);
+    Assertions.assertEquals(1, resultTask.getId());
+    Assertions.assertEquals("send an owl", resultTask.getName());
+    Assertions.assertEquals("remind Hermione to send an owl to Mad Eye Moody",
+        resultTask.getDescription());
+    Assertions.assertEquals(TaskStatus.TODO, resultTask.getTaskStatus());
+    Assertions.assertEquals(1, resultTask.getAssignedUsers().size());
+  }
+
+  @Transactional
+  private void createUsers() {
+    final User userHarry = new User();
+    userHarry.setUsername("Harry");
+
+    final User userRon = new User();
+    userRon.setUsername("Ron");
+
+    userRepository.saveAll(Arrays.asList(userHarry, userRon));
   }
 
 }

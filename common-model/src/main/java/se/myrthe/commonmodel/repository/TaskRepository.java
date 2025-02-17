@@ -1,4 +1,4 @@
-package se.myrthe.taskservice.repository;
+package se.myrthe.commonmodel.repository;
 
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.stereotype.Repository;

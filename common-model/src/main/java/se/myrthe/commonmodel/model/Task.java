@@ -15,6 +15,9 @@ import java.util.Objects;
 @Entity
 public class Task extends Auditable<String> {
 
+  public Task() {
+  }
+
   @Id
   @GeneratedValue
   @Column(name = "task_id")
@@ -22,7 +25,7 @@ public class Task extends Auditable<String> {
   private String name;
   private String description;
   private TaskStatus taskStatus;
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne
   @JoinColumn(name = "user_id")
   @JsonBackReference
   private User taskOwner;
