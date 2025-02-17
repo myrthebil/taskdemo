@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import se.myrthe.commonmodel.model.Task;
 import se.myrthe.commonmodel.model.User;
-import se.myrthe.taskservice.exceptions.InvalidRequestBodyException;
 import se.myrthe.taskservice.service.TaskService;
 
 @RestController
@@ -32,16 +31,8 @@ public class TaskController {
   }
 
   @PostMapping("/tasks")
-  public List<Task> getOwnedTasks(@RequestBody final User user) {
-    if (user == null) {
-      logger.error("Missing user information, request body is empty");
-      throw new InvalidRequestBodyException("Missing value for user in request body");
-    }
-    if (user.getUsername() == null) {
-      logger.error("Missing username in request body");
-      throw new InvalidRequestBodyException("Missing value for user in request body");
-    }
+  public List<Task> getOwnedTasks(@Valid @RequestBody final User user) {
     logger.info("Collecting tasks for user {}", user.getUsername());
-    return new ArrayList<>();
+    return service.getTasks(user);
   }
 }

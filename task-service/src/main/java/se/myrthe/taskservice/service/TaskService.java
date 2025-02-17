@@ -1,8 +1,10 @@
 package se.myrthe.taskservice.service;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.myrthe.commonmodel.model.Task;
+import se.myrthe.commonmodel.model.User;
 import se.myrthe.commonmodel.repository.TaskRepository;
 
 @Service
@@ -14,5 +16,9 @@ public class TaskService {
   public Task create(final Task task) {
     task.setCreatedBy(task.getTaskOwner().getUsername());
     return repository.save(task);
+  }
+
+  public List<Task> getTasks(final User user) {
+    return repository.findTasksByTaskOwner(user);
   }
 }

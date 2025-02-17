@@ -3,8 +3,10 @@ package se.myrthe.taskservice;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +18,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.transaction.annotation.Transactional;
 import se.myrthe.commonmodel.model.Task;
 import se.myrthe.commonmodel.model.TaskStatus;
 import se.myrthe.commonmodel.model.User;
@@ -79,6 +82,26 @@ public class TaskServiceApplicationTest {
   }
 
   @Test
+  public void givenUserHarry_whenRetrieveTasks_thenStatus200_andReturnsTasks() throws Exception {
+    createUsers();
+
+    final String userRequest = """
+        {
+          "username": "Harry"
+        }
+        """;
+
+    MvcResult result = mvc.perform(
+            post("/api/v1/tasks").content(userRequest).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk()).andReturn();
+
+    final List<Task> resultTask = mapper.readValue(result.getResponse().getContentAsString(),
+        new TypeReference<>() {
+        });
+    Assertions.assertEquals(1, resultTask.size());
+  }
+
+  @Test
   public void givenUserHarry_whenCreateCorruptTask_thenStatus400() throws Exception {
     createUsers();
 
@@ -93,7 +116,24 @@ public class TaskServiceApplicationTest {
         .andExpect(status().isBadRequest()).andReturn();
 
   }
-    private void createUsers() {
+
+  @Test
+  public void givenUserHarry_whenRetrieveCorruptTasks_thenStatus400() throws Exception {
+    createUsers();
+
+    final String taskRequest = """
+        {
+          "invalidProperty": "A shrubbery!"
+        }
+        """;
+
+    mvc.perform(
+            post("/api/v1/tasks").content(taskRequest).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isBadRequest()).andReturn();
+
+  }
+
+  private void createUsers() {
     final User userHarry = new User();
     userHarry.setUsername("Harry");
 

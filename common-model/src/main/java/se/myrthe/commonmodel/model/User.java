@@ -10,6 +10,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,6 +22,7 @@ public class User extends Auditable<String> {
   @GeneratedValue
   @Column(name = "user_id")
   private int id;
+  @NotBlank(message = "Username is required")
   private String username;
   @OneToMany
   @JoinColumn(name = "user_id")
