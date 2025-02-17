@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 @EntityScan("se.myrthe.commonmodel")
 public class TaskServiceApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(TaskServiceApplication.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(TaskServiceApplication.class, args);
+  }
 }

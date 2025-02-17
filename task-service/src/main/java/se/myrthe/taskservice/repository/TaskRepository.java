@@ -6,4 +6,5 @@ import se.myrthe.commonmodel.model.Task;
 
 @Repository
 public interface TaskRepository extends ListCrudRepository<Task, Integer> {
+
 }

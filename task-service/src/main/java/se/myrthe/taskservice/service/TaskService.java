@@ -8,11 +8,11 @@ import se.myrthe.taskservice.repository.TaskRepository;
 @Service
 public class TaskService {
 
-    @Autowired
-    private TaskRepository repository;
+  @Autowired
+  private TaskRepository repository;
 
-    public Task create(final Task task) {
-        task.setCreatedBy(task.getTaskOwner().getUsername());
-        return repository.save(task);
-    }
+  public Task create(final Task task) {
+    task.setCreatedBy(task.getTaskOwner().getUsername());
+    return repository.save(task);
+  }
 }

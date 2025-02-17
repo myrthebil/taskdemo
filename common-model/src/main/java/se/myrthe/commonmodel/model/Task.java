@@ -1,7 +1,6 @@
 package se.myrthe.commonmodel.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,124 +9,118 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-
 import java.util.List;
 
 @Entity
 public class Task extends Auditable<String> {
 
-    private Task() {
-    }
+  @Id
+  @GeneratedValue
+  @Column(name = "task_id")
+  private int id;
+  private String name;
+  private String description;
+  private TaskStatus taskStatus;
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "user_id")
+  @JsonBackReference
+  private User taskOwner;
+  @ManyToMany(mappedBy = "assignedTasks")
+  private List<User> assignedUsers;
 
-    private Task(final TaskBuilder builder) {
-        this.name = builder.name;
-        this.description = builder.description;
-        this.taskStatus = builder.taskStatus;
-        this.taskOwner = builder.taskOwner;
-    }
+  private Task() {
+  }
 
-    @Id
-    @GeneratedValue
-    @Column(name = "task_id")
-    private int id;
+  private Task(final TaskBuilder builder) {
+    this.name = builder.name;
+    this.description = builder.description;
+    this.taskStatus = builder.taskStatus;
+    this.taskOwner = builder.taskOwner;
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(final int id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(final String name) {
+    this.name = name;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(final String description) {
+    this.description = description;
+  }
+
+  public TaskStatus getTaskStatus() {
+    return taskStatus;
+  }
+
+  public void setTaskStatus(final TaskStatus taskStatus) {
+    this.taskStatus = taskStatus;
+  }
+
+  public User getTaskOwner() {
+    return taskOwner;
+  }
+
+  public void setTaskOwner(final User taskOwner) {
+    this.taskOwner = taskOwner;
+  }
+
+  public List<User> getAssignedUsers() {
+    return assignedUsers;
+  }
+
+  public void setAssignedUsers(final List<User> assignedUsers) {
+    this.assignedUsers = assignedUsers;
+  }
+
+  @Override
+  public String toString() {
+    return "Task{" + "name='" + name + '\'' + ", description='" + description + '\'' + '}';
+  }
+
+  public static class TaskBuilder {
 
     private String name;
-
     private String description;
-
     private TaskStatus taskStatus;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    @JsonBackReference
     private User taskOwner;
 
-    @ManyToMany(mappedBy = "assignedTasks")
-    private List<User> assignedUsers;
-
-    public int getId() {
-        return id;
+    public TaskBuilder setName(String name) {
+      this.name = name;
+      return this;
     }
 
-    public void setId(final int id) {
-        this.id = id;
+    public TaskBuilder setDescription(String description) {
+      this.description = description;
+      return this;
     }
 
-    public String getName() {
-        return name;
+    public TaskBuilder setTaskStatus(TaskStatus taskStatus) {
+      this.taskStatus = taskStatus;
+      return this;
     }
 
-    public void setName(final String name) {
-        this.name = name;
+    public TaskBuilder setTaskOwner(User taskOwner) {
+      this.taskOwner = taskOwner;
+      return this;
     }
 
-    public String getDescription() {
-        return description;
+    public Task build() {
+      return new Task(this);
     }
-
-    public void setDescription(final String description) {
-        this.description = description;
-    }
-
-    public TaskStatus getTaskStatus() {
-        return taskStatus;
-    }
-
-    public void setTaskStatus(final TaskStatus taskStatus) {
-        this.taskStatus = taskStatus;
-    }
-
-    public User getTaskOwner() {
-        return taskOwner;
-    }
-
-    public void setTaskOwner(final User taskOwner) {
-        this.taskOwner = taskOwner;
-    }
-
-    public List<User> getAssignedUsers() {
-        return assignedUsers;
-    }
-
-    public void setAssignedUsers(final List<User> assignedUsers) {
-        this.assignedUsers = assignedUsers;
-    }
-
-    @Override
-    public String toString() {
-        return "Task{" + "name='" + name + '\'' + ", description='" + description + '\'' + '}';
-    }
-
-    public static class TaskBuilder {
-
-        private String name;
-        private String description;
-        private TaskStatus taskStatus;
-        private User taskOwner;
-
-        public TaskBuilder setName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public TaskBuilder setDescription(String description) {
-            this.description = description;
-            return this;
-        }
-
-        public TaskBuilder setTaskStatus(TaskStatus taskStatus) {
-            this.taskStatus = taskStatus;
-            return this;
-        }
-
-        public TaskBuilder setTaskOwner(User taskOwner) {
-            this.taskOwner = taskOwner;
-            return this;
-        }
-
-        public Task build() {
-            return new Task(this);
-        }
-    }
+  }
 
 }
