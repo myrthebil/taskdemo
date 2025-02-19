@@ -39,6 +39,12 @@ public class User extends Auditable<String> {
   public User() {
   }
 
+  private User(final UserBuilder builder) {
+    this.username = builder.username;
+    this.ownedTasks = builder.ownedTasks;
+    this.assignedTasks = builder.assignedTasks;
+  }
+
   public int getId() {
     return id;
   }
@@ -100,4 +106,32 @@ public class User extends Auditable<String> {
   public int hashCode() {
     return Objects.hash(getId(), getUsername(), getOwnedTasks(), getAssignedTasks());
   }
+
+  public static class UserBuilder {
+
+    private String id;
+    private String username;
+    private List<Task> ownedTasks;
+    private List<Task> assignedTasks;
+
+    public UserBuilder setUsername(final String username) {
+      this.username = username;
+      return this;
+    }
+
+    public UserBuilder setOwnedTasks(final List<Task> ownedTasks) {
+      this.ownedTasks = ownedTasks;
+      return this;
+    }
+
+    public UserBuilder setAssignedTasks(final List<Task> assignedTasks) {
+      this.assignedTasks = assignedTasks;
+      return this;
+    }
+
+    public User build() {
+      return new User(this);
+    }
+  }
+
 }

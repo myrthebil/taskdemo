@@ -18,10 +18,10 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.transaction.annotation.Transactional;
 import se.myrthe.commonmodel.model.Task;
 import se.myrthe.commonmodel.model.TaskStatus;
 import se.myrthe.commonmodel.model.User;
+import se.myrthe.commonmodel.repository.TaskRepository;
 import se.myrthe.commonmodel.repository.UserRepository;
 
 /**
@@ -44,6 +44,9 @@ public class TaskServiceApplicationTest {
   private UserRepository userRepository;
 
   @Autowired
+  private TaskRepository taskRepository;
+
+  @Autowired
   private ObjectMapper mapper;
 
   @Test
@@ -60,7 +63,7 @@ public class TaskServiceApplicationTest {
           "name": "send an owl",
           "description": "remind Hermione to send an owl to Mad Eye Moody",
           "taskStatus": "TODO",
-          "assignedUsers": [{"username": "Ron", "id": "2"}],
+          "assignedUsers": [{"username": "Ron", "id": 2}],
           "taskOwner": {
             "username": "Harry",
             "id": 1
@@ -73,7 +76,7 @@ public class TaskServiceApplicationTest {
         .andExpect(status().isOk()).andReturn();
 
     final Task resultTask = mapper.readValue(result.getResponse().getContentAsString(), Task.class);
-    Assertions.assertEquals(1, resultTask.getId());
+    Assertions.assertNotNull(resultTask.getId());
     Assertions.assertEquals("send an owl", resultTask.getName());
     Assertions.assertEquals("remind Hermione to send an owl to Mad Eye Moody",
         resultTask.getDescription());
@@ -83,13 +86,15 @@ public class TaskServiceApplicationTest {
 
   @Test
   public void givenUserHarry_whenRetrieveTasks_thenStatus200_andReturnsTasks() throws Exception {
-    createUsers();
+    final User savedUser = userRepository.save(new User.UserBuilder().setUsername("Harry").build());
+    final Task savedTask = createAndSaveTask(savedUser);
 
     final String userRequest = """
         {
-          "username": "Harry"
+          "username": "Harry",
+          "id": %s
         }
-        """;
+        """.formatted(savedUser.getId());
 
     MvcResult result = mvc.perform(
             post("/api/v1/tasks").content(userRequest).contentType(MediaType.APPLICATION_JSON))
@@ -99,6 +104,13 @@ public class TaskServiceApplicationTest {
         new TypeReference<>() {
         });
     Assertions.assertEquals(1, resultTask.size());
+    Assertions.assertEquals(savedTask.getId(), resultTask.getFirst().getId());
+  }
+
+  private Task createAndSaveTask(final User user) {
+    final Task task = new Task.TaskBuilder().setTaskOwner(user).setTaskStatus(TaskStatus.TODO)
+        .setName("Feed Hedwig").setDescription("She likes mice").build();
+    return taskRepository.save(task);
   }
 
   @Test
@@ -140,7 +152,7 @@ public class TaskServiceApplicationTest {
     final User userRon = new User();
     userRon.setUsername("Ron");
 
-    userRepository.saveAll(Arrays.asList(userHarry, userRon));
+    List<User> savedUsers = userRepository.saveAll(Arrays.asList(userHarry, userRon));
   }
 
 }
