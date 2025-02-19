@@ -15,6 +15,8 @@ import se.myrthe.commonmodel.repository.UserRepository;
     "spring.config.location=classpath:application-integration-test.yml"})
 public class TaskControllerTest {
 
+  public static final String RUBEUS = "Rubeus";
+
   @Autowired
   private TaskRepository taskRepository;
 
@@ -36,9 +38,9 @@ public class TaskControllerTest {
 
     // Check the audit information of the saved task
     Assertions.assertNotNull(savedTask.getCreatedAt());
-    Assertions.assertEquals("Rubeus", savedTask.getCreatedBy());
+    Assertions.assertEquals(RUBEUS, savedTask.getCreatedBy());
     Assertions.assertNotNull(savedTask.getLastModifiedAt());
-    Assertions.assertEquals("Rubeus", savedTask.getLastModifiedBy());
+    Assertions.assertEquals(RUBEUS, savedTask.getLastModifiedBy());
   }
 
   @Test
@@ -71,7 +73,7 @@ public class TaskControllerTest {
   }
 
   private User createAndSaveUser() {
-    final User user = new User.UserBuilder().setUsername("Rubeus").build();
+    final User user = new User.UserBuilder().setUsername(RUBEUS).build();
     userRepository.save(user);
     return user;
   }
@@ -85,8 +87,8 @@ public class TaskControllerTest {
         .build();
 
     // Set the audit info
-    task.setCreatedBy("Rubeus");
-    task.setLastModifiedBy("Rubeus");
+    task.setCreatedBy(RUBEUS);
+    task.setLastModifiedBy(RUBEUS);
 
     // Save the task
     return taskRepository.save(task);
