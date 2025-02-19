@@ -32,7 +32,7 @@ public class TaskService {
             repository.findTasksByTaskOwner(user).stream(),
             repository.findTasksByAssignedUsers(user).stream()
         )
-        .collect(Collectors.toCollection(HashSet::new)) // Ensures uniqueness and ordering
+        .collect(Collectors.toCollection(HashSet::new)) // Ensures uniqueness
         .stream()
         .toList();
   }
