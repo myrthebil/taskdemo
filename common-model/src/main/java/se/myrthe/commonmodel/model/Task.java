@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Task extends Auditable<String> {
+public class Task extends Auditable<String> implements Comparable {
 
   @Id
   @GeneratedValue
@@ -31,7 +32,12 @@ public class Task extends Auditable<String> {
   @JsonBackReference
   @NotNull(message = "Task owner is mandatory")
   private User taskOwner;
-  @ManyToMany(mappedBy = "assignedTasks")
+  @ManyToMany
+  @JoinTable(
+      name = "assigned_task_user",
+      joinColumns = {@JoinColumn(name = "task_id")},
+      inverseJoinColumns = {@JoinColumn(name = "user_id")}
+  )
   private List<User> assignedUsers;
 
   public Task() {
@@ -42,6 +48,7 @@ public class Task extends Auditable<String> {
     this.description = builder.description;
     this.taskStatus = builder.taskStatus;
     this.taskOwner = builder.taskOwner;
+    this.assignedUsers = builder.assignedUsers;
   }
 
   public int getId() {
@@ -126,12 +133,30 @@ public class Task extends Auditable<String> {
         getAssignedUsers());
   }
 
+  @Override
+  public int compareTo(Object other) {
+    if (other == null) {
+      throw new NullPointerException("Cannot compare Task with null");
+    }
+    if (this.taskOwner == null && ((Task) other).taskOwner == null) {
+      return 0;
+    }
+    if (this.taskOwner == null) {
+      return -1;
+    }
+    if (((Task) other).taskOwner == null) {
+      return 1;
+    }
+    return this.taskOwner.getId() - ((Task) other).taskOwner.getId(); // Assuming User has an ID field
+  }
+
   public static class TaskBuilder {
 
     private String name;
     private String description;
     private TaskStatus taskStatus;
     private User taskOwner;
+    private List<User> assignedUsers;
 
     public TaskBuilder setName(String name) {
       this.name = name;
@@ -153,9 +178,15 @@ public class Task extends Auditable<String> {
       return this;
     }
 
+    public TaskBuilder setAssignedUsers(final List<User> assignedUsers) {
+      this.assignedUsers = assignedUsers;
+      return this;
+    }
+
     public Task build() {
       return new Task(this);
     }
+
   }
 
 }

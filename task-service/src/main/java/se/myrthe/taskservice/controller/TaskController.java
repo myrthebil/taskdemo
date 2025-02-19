@@ -36,7 +36,7 @@ public class TaskController {
   }
 
   @PostMapping(value = {"/tasks"})
-  public List<Task> getOwnedTasks(@Valid @RequestBody final User user) {
+  public List<Task> getTasks(@Valid @RequestBody final User user) {
     logger.info("Collecting tasks for user {}", user.getUsername());
     return service.getTasks(user);
   }

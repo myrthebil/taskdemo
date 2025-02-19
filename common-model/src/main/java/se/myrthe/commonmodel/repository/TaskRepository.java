@@ -10,7 +10,9 @@ import se.myrthe.commonmodel.model.User;
 @Repository
 public interface TaskRepository extends ListCrudRepository<Task, Integer> {
 
-  List<Task> findTasksByTaskOwner(final User user);
+  List<Task> findTasksByTaskOwner(final User taskOwner);
+
+  List<Task> findTasksByAssignedUsers(final User assignedUser);
 
   void deleteTaskById(@NotNull final Integer taskId);
 }

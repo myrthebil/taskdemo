@@ -31,7 +31,7 @@ import se.myrthe.commonmodel.repository.UserRepository;
  * dropped automatically.
  */
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = TaskServiceApplication.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = TaskServiceApplication.class, useMainMethod = SpringBootTest.UseMainMethod.ALWAYS)
 @AutoConfigureMockMvc
 @TestPropertySource(properties = {
     "spring.config.location=classpath:application-integration-test.yml"})
@@ -48,11 +48,6 @@ public class TaskServiceApplicationTest {
 
   @Autowired
   private ObjectMapper mapper;
-
-  @Test
-  public void testApplicationStartup() {
-    // tests application startup without any errors
-  }
 
   @Test
   public void givenUserHarry_whenCreateTask_thenStatus200_andReturnsTask() throws Exception {

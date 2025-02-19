@@ -6,7 +6,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -28,12 +27,7 @@ public class User extends Auditable<String> {
   @JoinColumn(name = "user_id")
   @JsonManagedReference
   private List<Task> ownedTasks;
-  @ManyToMany
-  @JoinTable(
-      name = "assigned_task_user",
-      joinColumns = {@JoinColumn(name = "user_id")},
-      inverseJoinColumns = {@JoinColumn(name = "task_id")}
-  )
+  @ManyToMany(mappedBy = "assignedUsers")
   private List<Task> assignedTasks;
 
   public User() {

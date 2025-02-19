@@ -68,10 +68,6 @@ public abstract class Auditable<T> {
     return createdAt;
   }
 
-  public void setCreatedAt(final Date createdAt) {
-    this.createdAt = createdAt;
-  }
-
   public T getLastModifiedBy() {
     return lastModifiedBy;
   }
@@ -82,10 +78,6 @@ public abstract class Auditable<T> {
 
   public Date getLastModifiedAt() {
     return lastModifiedAt;
-  }
-
-  public void setLastModifiedAt(final Date lastModifiedAt) {
-    this.lastModifiedAt = lastModifiedAt;
   }
 
   /**
