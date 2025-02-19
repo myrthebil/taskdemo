@@ -69,7 +69,7 @@ public class TaskRepositoryTest {
   }
 
   @Test
-  public void testFindTasksByTaskAssignee() {
+  public void testFindTasksByAssignedUser() {
     // Let's create the task owner first
     final User taskOwner = createAndSaveUser(RUBEUS);
 

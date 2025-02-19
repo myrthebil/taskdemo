@@ -42,8 +42,7 @@ public class TaskController {
   }
 
   @DeleteMapping(value = {"/task/remove"}, params = {"taskId"})
-  public void removeTask(@RequestParam(name = "taskId") @NotNull final Integer taskId,
-      final HttpServletResponse response) {
+  public void removeTask(@RequestParam(name = "taskId") @NotNull final Integer taskId) {
     logger.info("Removing task with id {}", taskId);
     service.removeTask(taskId);
   }

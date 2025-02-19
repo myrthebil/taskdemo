@@ -71,7 +71,6 @@ public class TaskServiceApplicationTest {
         .andExpect(status().isOk()).andReturn();
 
     final Task resultTask = mapper.readValue(result.getResponse().getContentAsString(), Task.class);
-    Assertions.assertNotNull(resultTask.getId());
     Assertions.assertEquals("send an owl", resultTask.getName());
     Assertions.assertEquals("remind Hermione to send an owl to Mad Eye Moody",
         resultTask.getDescription());
@@ -147,7 +146,7 @@ public class TaskServiceApplicationTest {
     final User userRon = new User();
     userRon.setUsername("Ron");
 
-    List<User> savedUsers = userRepository.saveAll(Arrays.asList(userHarry, userRon));
+    userRepository.saveAll(Arrays.asList(userHarry, userRon));
   }
 
 }

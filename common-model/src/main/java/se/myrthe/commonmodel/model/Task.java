@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Task extends Auditable<String> implements Comparable {
+public class Task extends Auditable<String> {
 
   @Id
   @GeneratedValue
@@ -131,23 +131,6 @@ public class Task extends Auditable<String> implements Comparable {
   public int hashCode() {
     return Objects.hash(getId(), getName(), getDescription(), getTaskStatus(), getTaskOwner(),
         getAssignedUsers());
-  }
-
-  @Override
-  public int compareTo(Object other) {
-    if (other == null) {
-      throw new NullPointerException("Cannot compare Task with null");
-    }
-    if (this.taskOwner == null && ((Task) other).taskOwner == null) {
-      return 0;
-    }
-    if (this.taskOwner == null) {
-      return -1;
-    }
-    if (((Task) other).taskOwner == null) {
-      return 1;
-    }
-    return this.taskOwner.getId() - ((Task) other).taskOwner.getId(); // Assuming User has an ID field
   }
 
   public static class TaskBuilder {

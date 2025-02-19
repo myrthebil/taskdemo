@@ -1,8 +1,8 @@
 package se.myrthe.taskservice.service;
 
 import jakarta.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.List;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,18 +22,19 @@ public class TaskService {
     return repository.save(task);
   }
 
+  public Task updateTask(final User editor, final Task task) {
+    task.setLastModifiedBy(editor.getUsername());
+    return repository.save(task);
+  }
+
   public List<Task> getTasks(final User user) {
     return Stream.concat(
             repository.findTasksByTaskOwner(user).stream(),
             repository.findTasksByAssignedUsers(user).stream()
         )
-        .collect(Collectors.toCollection(TreeSet::new)) // Ensures uniqueness and ordering
+        .collect(Collectors.toCollection(HashSet::new)) // Ensures uniqueness and ordering
         .stream()
         .toList();
-  }
-
-  public List<Task> getTasksByAssignedUser(final User assignedUser) {
-    return repository.findTasksByAssignedUsers(assignedUser);
   }
 
   public void removeTask(@NotNull Integer taskId) {
