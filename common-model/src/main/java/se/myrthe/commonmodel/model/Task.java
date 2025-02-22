@@ -9,20 +9,22 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "tasks")
 public class Task extends Auditable<String> {
 
   @Id
   @GeneratedValue
   @Column(name = "task_id")
   private int id;
-  @NotBlank(message = "Name is mandatory")
-  private String name;
+  @NotBlank(message = "Title is mandatory")
+  private String title;
   @NotBlank(message = "Description is mandatory")
   private String description;
   @NotNull(message = "Task status is mandatory")
@@ -44,7 +46,7 @@ public class Task extends Auditable<String> {
   }
 
   private Task(final TaskBuilder builder) {
-    this.name = builder.name;
+    this.title = builder.title;
     this.description = builder.description;
     this.taskStatus = builder.taskStatus;
     this.taskOwner = builder.taskOwner;
@@ -59,12 +61,12 @@ public class Task extends Auditable<String> {
     this.id = id;
   }
 
-  public String getName() {
-    return name;
+  public String getTitle() {
+    return title;
   }
 
-  public void setName(final String name) {
-    this.name = name;
+  public void setTitle(final String title) {
+    this.title = title;
   }
 
   public String getDescription() {
@@ -103,7 +105,7 @@ public class Task extends Auditable<String> {
   public String toString() {
     return "Task{" +
         "id=" + id +
-        ", name='" + name + '\'' +
+        ", name='" + title + '\'' +
         ", description='" + description + '\'' +
         ", taskStatus=" + taskStatus +
         ", taskOwner=" + taskOwner +
@@ -121,7 +123,7 @@ public class Task extends Auditable<String> {
       return false;
     }
     Task task = (Task) o;
-    return getId() == task.getId() && Objects.equals(getName(), task.getName())
+    return getId() == task.getId() && Objects.equals(getTitle(), task.getTitle())
         && Objects.equals(getDescription(), task.getDescription())
         && getTaskStatus() == task.getTaskStatus() && Objects.equals(getTaskOwner(),
         task.getTaskOwner()) && Objects.equals(getAssignedUsers(), task.getAssignedUsers());
@@ -129,34 +131,34 @@ public class Task extends Auditable<String> {
 
   @Override
   public int hashCode() {
-    return Objects.hash(getId(), getName(), getDescription(), getTaskStatus(), getTaskOwner(),
+    return Objects.hash(getId(), getTitle(), getDescription(), getTaskStatus(), getTaskOwner(),
         getAssignedUsers());
   }
 
   public static class TaskBuilder {
 
-    private String name;
+    private String title;
     private String description;
     private TaskStatus taskStatus;
     private User taskOwner;
     private List<User> assignedUsers;
 
-    public TaskBuilder setName(String name) {
-      this.name = name;
+    public TaskBuilder setTitle(final String title) {
+      this.title = title;
       return this;
     }
 
-    public TaskBuilder setDescription(String description) {
+    public TaskBuilder setDescription(final String description) {
       this.description = description;
       return this;
     }
 
-    public TaskBuilder setTaskStatus(TaskStatus taskStatus) {
+    public TaskBuilder setTaskStatus(final TaskStatus taskStatus) {
       this.taskStatus = taskStatus;
       return this;
     }
 
-    public TaskBuilder setTaskOwner(User taskOwner) {
+    public TaskBuilder setTaskOwner(final User taskOwner) {
       this.taskOwner = taskOwner;
       return this;
     }

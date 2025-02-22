@@ -1,11 +1,11 @@
 logging:
   level:
-    web: DEBUG
-    org.springframework.web: DEBUG
+    web: INFO
+    org.springframework.web: INFO
     se.myrthe: TRACE
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/mydatabase
+    url: ${SPRING_DATASOURCE_URL}
     username: myuser
     password: mypassword
     platform: postgresql

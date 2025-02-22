@@ -38,7 +38,7 @@ public class TaskControllerTest {
 
     Task newTask = new Task();
     newTask.setTaskOwner(mockUser);
-    newTask.setName("Remembrall");
+    newTask.setTitle("Remembrall");
     newTask.setDescription("Don't forget to bring it");
 
     when(service.createTask(any(Task.class))).thenReturn(newTask);

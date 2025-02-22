@@ -55,7 +55,7 @@ public class TaskServiceApplicationTest {
 
     final String taskRequest = """
         {
-          "name": "send an owl",
+          "title": "send an owl",
           "description": "remind Hermione to send an owl to Mad Eye Moody",
           "taskStatus": "TODO",
           "assignedUsers": [{"username": "Ron", "id": 2}],
@@ -71,7 +71,7 @@ public class TaskServiceApplicationTest {
         .andExpect(status().isOk()).andReturn();
 
     final Task resultTask = mapper.readValue(result.getResponse().getContentAsString(), Task.class);
-    Assertions.assertEquals("send an owl", resultTask.getName());
+    Assertions.assertEquals("send an owl", resultTask.getTitle());
     Assertions.assertEquals("remind Hermione to send an owl to Mad Eye Moody",
         resultTask.getDescription());
     Assertions.assertEquals(TaskStatus.TODO, resultTask.getTaskStatus());
@@ -103,7 +103,7 @@ public class TaskServiceApplicationTest {
 
   private Task createAndSaveTask(final User user) {
     final Task task = new Task.TaskBuilder().setTaskOwner(user).setTaskStatus(TaskStatus.TODO)
-        .setName("Feed Hedwig").setDescription("She likes mice").build();
+        .setTitle("Feed Hedwig").setDescription("She likes mice").build();
     return taskRepository.save(task);
   }
 

@@ -41,7 +41,7 @@ public class TaskRepositoryTest {
 
     // Check the saved entity
     Assertions.assertEquals(savedTaskOwner, savedTask.getTaskOwner());
-    Assertions.assertEquals("Feed slugs", savedTask.getName());
+    Assertions.assertEquals("Feed slugs", savedTask.getTitle());
     Assertions.assertEquals("Make sure they don't feed on you", savedTask.getDescription());
 
     // Check the audit information of the saved task
@@ -102,7 +102,7 @@ public class TaskRepositoryTest {
     Task foundTask = taskRepository.findById(savedTask.getId()).orElseThrow();
 
     // Change the name of the task
-    foundTask.setName("Wingardium!");
+    foundTask.setTitle("Wingardium!");
 
     // Update the task
     taskRepository.save(foundTask);
@@ -110,7 +110,7 @@ public class TaskRepositoryTest {
     // Retrieve the task by id and check the name
     final Task updatedTask = taskRepository.findById(foundTask.getId()).orElseThrow();
 
-    Assertions.assertEquals("Wingardium!", updatedTask.getName());
+    Assertions.assertEquals("Wingardium!", updatedTask.getTitle());
   }
 
   @Test
@@ -154,7 +154,7 @@ public class TaskRepositoryTest {
         .setTaskOwner(taskOwner)
         .setAssignedUsers(assignedUsers)
         .setTaskStatus(TaskStatus.TODO)
-        .setName("Feed slugs")
+        .setTitle("Feed slugs")
         .setDescription("Make sure they don't feed on you")
         .build();
   }

@@ -1,6 +1,5 @@
 package se.myrthe.taskservice.controller;
 
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;

@@ -41,7 +41,7 @@ public class TaskServiceTest {
 
     Task mockTask = new Task();
     mockTask.setTaskOwner(mockUser);
-    mockTask.setName("Sample Task");
+    mockTask.setTitle("Sample Task");
 
     when(repository.save(mockTask)).thenReturn(mockTask);
 
@@ -64,12 +64,12 @@ public class TaskServiceTest {
     Task ownedTask = new Task();
     ownedTask.setId(1);
     ownedTask.setTaskOwner(mockUser);
-    ownedTask.setName("Owned Task");
+    ownedTask.setTitle("Owned Task");
 
     Task assignedTask = new Task();
     assignedTask.setId(2);
     assignedTask.setTaskOwner(new User()); // Different owner
-    assignedTask.setName("Assigned Task");
+    assignedTask.setTitle("Assigned Task");
 
     List<Task> ownedTasks = List.of(ownedTask);
     List<Task> assignedTasks = List.of(assignedTask);
@@ -98,7 +98,7 @@ public class TaskServiceTest {
 
     Task updatedTask = new Task();
     updatedTask.setId(1);
-    updatedTask.setName("Daily Prophet draft");
+    updatedTask.setTitle("Daily Prophet draft");
     updatedTask.setDescription("Dumbledore: daft or dangerous?");
     updatedTask.setLastModifiedBy("Rita");
 
