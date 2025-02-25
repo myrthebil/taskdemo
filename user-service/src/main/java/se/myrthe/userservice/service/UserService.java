@@ -19,6 +19,6 @@ public class UserService {
    * @return {@link User}
    */
   public User createUser(@Valid final String username) {
-    return repository.save(new User.UserBuilder().setUsername(username).build());
+    return repository.save(User.builder().username(username).build());
   }
 }

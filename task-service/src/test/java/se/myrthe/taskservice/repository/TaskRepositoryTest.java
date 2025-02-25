@@ -130,7 +130,7 @@ public class TaskRepositoryTest {
   }
 
   private User createAndSaveUser(final String username) {
-    final User user = new User.UserBuilder().setUsername(username).build();
+    final User user = User.builder().username(username).build();
     userRepository.save(user);
     return user;
   }

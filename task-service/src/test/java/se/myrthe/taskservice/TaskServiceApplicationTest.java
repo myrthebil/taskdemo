@@ -80,7 +80,7 @@ public class TaskServiceApplicationTest {
 
   @Test
   public void givenUserHarry_whenRetrieveTasks_thenStatus200_andReturnsTasks() throws Exception {
-    final User savedUser = userRepository.save(new User.UserBuilder().setUsername("Harry").build());
+    final User savedUser = userRepository.save(User.builder().username("Harry").build());
     final Task savedTask = createAndSaveTask(savedUser);
 
     final String userRequest = """
