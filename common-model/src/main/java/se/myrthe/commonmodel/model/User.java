@@ -18,13 +18,14 @@ import java.util.Objects;
  * Represents a user entity within the system.
  *
  * <p>This entity extends {@link Auditable} to include audit fields such as
- * createdBy and lastModifiedBy, which track changes made by users. The generic parameter
- * {@code String} is used for the auditing identifier.</p>
+ * createdBy and lastModifiedBy, which track changes made by users. The generic
+ * parameter {@code String} is used for the auditing identifier.</p>
  *
  * <p>The {@link User} entity is mapped to a database table and is intended
  * to store user-related information.</p>
  *
- * <p>To create a new user, you can use the {@link UserBuilder} for a fluent API:</p>
+ * <p>To create a new user, you can use the {@link UserBuilder} for a fluent
+ * API:</p>
  * <pre>
  *     User user = User.builder()
  *                     .username("bertie_botts")
@@ -37,21 +38,59 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "users")
-public class User extends Auditable<String> {
+public final class User extends Auditable<String> {
 
+  /**
+   * Represents the unique identifier for the user. The field is marked with
+   * {@code @Id} for primary key mapping and {@code @GeneratedValue} to
+   * automatically generate values for the user ID.
+   *
+   * @see jakarta.persistence.Id
+   * @see jakarta.persistence.GeneratedValue
+   * @see jakarta.persistence.Column
+   */
   @Id
   @GeneratedValue
   @Column(name = "user_id")
   private int id;
 
+  /**
+   * The username of the user. This field must not be blank as enforced by the
+   * {@code @NotBlank} constraint. A message is provided to indicate that the
+   * username is required.
+   *
+   * @see jakarta.validation.constraints.NotBlank
+   */
   @NotBlank(message = "Username is required")
   private String username;
 
+
+  /**
+   * The list of tasks owned by the user. This relationship is defined with
+   * {@code @OneToMany}, and the {@code @JoinColumn} annotation specifies the
+   * foreign key column in the related {@code Task} entity. The
+   * {@code @JsonManagedReference} annotation is used to manage the
+   * serialization of this list to prevent infinite recursion during JSON
+   * conversion.
+   *
+   * @see jakarta.persistence.OneToMany
+   * @see jakarta.persistence.JoinColumn
+   * @see com.fasterxml.jackson.annotation.JsonManagedReference
+   * @see Task
+   */
   @OneToMany
   @JoinColumn(name = "user_id")
   @JsonManagedReference
   private List<Task> ownedTasks;
 
+  /**
+   * The list of tasks assigned to the user. This relationship is defined with
+   * {@code @ManyToMany} and is mapped by the {@code assignedUsers} field in the
+   * {@code Task} entity.
+   *
+   * @see jakarta.persistence.ManyToMany
+   * @see Task
+   */
   @ManyToMany(mappedBy = "assignedUsers")
   private List<Task> assignedTasks;
 
@@ -135,13 +174,13 @@ public class User extends Auditable<String> {
 
   @Override
   public String toString() {
-    return "User{" + "id=" + id + ", username='" + username + '\'' +
-        ", ownedTasks=" + ownedTasks + ", assignedTasks=" + assignedTasks +
-        "}";
+    return "User{" + "id=" + id + ", username='" + username + '\''
+        + ", ownedTasks=" + ownedTasks + ", assignedTasks=" + assignedTasks
+        + "}";
   }
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
       return true;
     }
@@ -149,10 +188,9 @@ public class User extends Auditable<String> {
       return false;
     }
     User user = (User) o;
-    return id == user.id &&
-        Objects.equals(username, user.username) &&
-        Objects.equals(ownedTasks, user.ownedTasks) &&
-        Objects.equals(assignedTasks, user.assignedTasks);
+    return id == user.id && Objects.equals(username, user.username)
+        && Objects.equals(ownedTasks, user.ownedTasks) && Objects.equals(
+        assignedTasks, user.assignedTasks);
   }
 
   @Override
@@ -173,7 +211,8 @@ public class User extends Auditable<String> {
   }
 
   /**
-   * Creates a new {@link UserBuilder} instance for constructing {@link User} objects.
+   * Creates a new {@link UserBuilder} instance for constructing {@link User}
+   * objects.
    *
    * @return a new {@link UserBuilder} instance
    */
@@ -186,9 +225,21 @@ public class User extends Auditable<String> {
    */
   public static class UserBuilder {
 
+    /**
+     * The ID field of the {@link User}.
+     */
     private int id;
+    /**
+     * The username of the {@link User}.
+     */
     private String username;
+    /**
+     * Initialize to empty list of owned {@link Task}s.
+     */
     private List<Task> ownedTasks = new ArrayList<>();
+    /**
+     * Initialize to empty list of assigned {@link Task}s.
+     */
     private List<Task> assignedTasks = new ArrayList<>();
 
     /**
@@ -220,7 +271,8 @@ public class User extends Auditable<String> {
      * @return the current {@link UserBuilder} instance
      */
     public UserBuilder ownedTasks(final List<Task> ownedTasks) {
-      this.ownedTasks = (ownedTasks != null) ? new ArrayList<>(ownedTasks) : new ArrayList<>();
+      this.ownedTasks = (ownedTasks != null) ? new ArrayList<>(ownedTasks)
+          : new ArrayList<>();
       return this;
     }
 
@@ -232,12 +284,14 @@ public class User extends Auditable<String> {
      */
     public UserBuilder assignedTasks(final List<Task> assignedTasks) {
       this.assignedTasks =
-          (assignedTasks != null) ? new ArrayList<>(assignedTasks) : new ArrayList<>();
+          (assignedTasks != null) ? new ArrayList<>(assignedTasks)
+              : new ArrayList<>();
       return this;
     }
 
     /**
-     * Builds and returns a new {@link User} instance using the provided values.
+     * Builds and returns a new {@link User} instance using the provided
+     * values.
      *
      * @return a new {@link User} object
      */

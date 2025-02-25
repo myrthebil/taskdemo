@@ -15,8 +15,8 @@ import se.myrthe.commonmodel.repository.UserRepository;
 import se.myrthe.taskservice.controller.TaskController;
 
 /**
- * Test class for {@link TaskController} using {@link DataJpaTest} for a more lightweight way of
- * testing.
+ * Test class for {@link TaskController} using {@link DataJpaTest} for a more
+ * lightweight way of testing.
  */
 @DataJpaTest
 public class TaskRepositoryTest {
@@ -31,6 +31,19 @@ public class TaskRepositoryTest {
   @Autowired
   private UserRepository userRepository;
 
+  private static Task createTask(final User taskOwner,
+      final User assignedUser) {
+    List<User> assignedUsers = new ArrayList<>();
+    assignedUsers.add(assignedUser);
+    return new Task.TaskBuilder()
+        .taskOwner(taskOwner)
+        .assignedUsers(assignedUsers)
+        .taskStatus(TaskStatus.TODO)
+        .title("Feed slugs")
+        .description("Make sure they don't feed on you")
+        .build();
+  }
+
   @Test
   public void testSaveTask() {
     // Let's create some users first
@@ -42,7 +55,8 @@ public class TaskRepositoryTest {
     // Check the saved entity
     Assertions.assertEquals(savedTaskOwner, savedTask.getTaskOwner());
     Assertions.assertEquals("Feed slugs", savedTask.getTitle());
-    Assertions.assertEquals("Make sure they don't feed on you", savedTask.getDescription());
+    Assertions.assertEquals("Make sure they don't feed on you",
+        savedTask.getDescription());
 
     // Check the audit information of the saved task
     Assertions.assertNotNull(savedTask.getCreatedAt());
@@ -61,7 +75,8 @@ public class TaskRepositoryTest {
     final Task savedTask = createAndSaveTask(taskOwner, assignedUser);
 
     // Test finding all tasks for the user
-    final Task foundTask = taskRepository.findTasksByTaskOwner(taskOwner).getFirst();
+    final Task foundTask = taskRepository.findTasksByTaskOwner(taskOwner)
+        .getFirst();
 
     // Check if the found task is indeed the saved task
     Assertions.assertEquals(savedTask.getId(), foundTask.getId());
@@ -80,11 +95,13 @@ public class TaskRepositoryTest {
     final Task savedTask = createAndSaveTask(taskOwner, assignedUser);
 
     // Test finding all tasks for the assigned user
-    final List<Task> foundTasks = taskRepository.findTasksByAssignedUsers(assignedUser);
+    final List<Task> foundTasks = taskRepository.findTasksByAssignedUsers(
+        assignedUser);
 
     // Check if the found task is indeed the assigned task
     Assertions.assertEquals(savedTask.getId(), foundTasks.getFirst().getId());
-    Assertions.assertEquals(assignedUser, savedTask.getAssignedUsers().getFirst());
+    Assertions.assertEquals(assignedUser,
+        savedTask.getAssignedUsers().getFirst());
   }
 
   @Test
@@ -108,7 +125,8 @@ public class TaskRepositoryTest {
     taskRepository.save(foundTask);
 
     // Retrieve the task by id and check the name
-    final Task updatedTask = taskRepository.findById(foundTask.getId()).orElseThrow();
+    final Task updatedTask = taskRepository.findById(foundTask.getId())
+        .orElseThrow();
 
     Assertions.assertEquals("Wingardium!", updatedTask.getTitle());
   }
@@ -135,7 +153,8 @@ public class TaskRepositoryTest {
     return user;
   }
 
-  private Task createAndSaveTask(final User taskOwner, final User taskAssignee) {
+  private Task createAndSaveTask(final User taskOwner,
+      final User taskAssignee) {
     // Test saving an entity for this user
     final Task task = createTask(taskOwner, taskAssignee);
 
@@ -145,18 +164,6 @@ public class TaskRepositoryTest {
 
     // Save the task
     return taskRepository.save(task);
-  }
-
-  private static Task createTask(final User taskOwner, final User assignedUser) {
-    List<User> assignedUsers = new ArrayList<>();
-    assignedUsers.add(assignedUser);
-    return new Task.TaskBuilder()
-        .taskOwner(taskOwner)
-        .assignedUsers(assignedUsers)
-        .taskStatus(TaskStatus.TODO)
-        .title("Feed slugs")
-        .description("Make sure they don't feed on you")
-        .build();
   }
 
 }

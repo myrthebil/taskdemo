@@ -19,13 +19,14 @@ import java.util.Objects;
  * Represents a task entity within the system.
  *
  * <p>This entity extends {@link Auditable} to include audit fields such as
- * createdBy and lastModifiedBy, which track changes made by users. The generic parameter
- * {@code String} is used for the auditing identifier.</p>
+ * createdBy and lastModifiedBy, which track changes made by users. The generic
+ * parameter {@code String} is used for the auditing identifier.</p>
  *
  * <p>The {@link Task} entity is mapped to a database table and is intended
  * to store task-related information.</p>
  *
- * <p>To create a new task, you can use the {@link TaskBuilder} for a fluent API:</p>
+ * <p>To create a new task, you can use the {@link TaskBuilder} for a fluent
+ * API:</p>
  * <pre>
  *     Task task = Task.builder()
  *                     .title("Find Hedwig")
@@ -39,35 +40,91 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "tasks")
-public class Task extends Auditable<String> {
+public final class Task extends Auditable<String> {
 
+  /**
+   * Represents the unique identifier for the task. The field is marked with
+   * {@code @Id} for primary key mapping and {@code @GeneratedValue} to
+   * automatically generate values for the task ID.
+   *
+   * @see jakarta.persistence.Id
+   * @see jakarta.persistence.GeneratedValue
+   * @see jakarta.persistence.Column
+   */
   @Id
   @GeneratedValue
   @Column(name = "task_id")
   private int id;
 
+  /**
+   * The title of the task. This field must not be blank as enforced by the
+   * {@code @NotBlank} constraint. A message is provided to indicate that the
+   * title is mandatory.
+   *
+   * @see jakarta.validation.constraints.NotBlank
+   */
   @NotBlank(message = "Title is mandatory")
   private String title;
 
+  /**
+   * The description of the task. This field must not be blank as enforced by
+   * the {@code @NotBlank} constraint. A message is provided to indicate that
+   * the description is mandatory.
+   *
+   * @see jakarta.validation.constraints.NotBlank
+   */
   @NotBlank(message = "Description is mandatory")
   private String description;
 
+  /**
+   * The current status of the task. This field must not be null as enforced by
+   * the {@code @NotNull} constraint. The task status is represented by the
+   * {@code TaskStatus} enum.
+   *
+   * @see jakarta.validation.constraints.NotNull
+   * @see TaskStatus
+   */
   @NotNull(message = "Task status is mandatory")
   private TaskStatus taskStatus;
 
+  /**
+   * The user who owns the task. This relationship is defined with
+   * {@code @ManyToOne}, and the {@code @JoinColumn} annotation specifies the
+   * foreign key column for the associated user. The {@code @JsonBackReference}
+   * annotation prevents infinite recursion during JSON serialization. The task
+   * owner cannot be null, as enforced by the {@code @NotNull} constraint.
+   *
+   * @see jakarta.persistence.ManyToOne
+   * @see jakarta.persistence.JoinColumn
+   * @see com.fasterxml.jackson.annotation.JsonBackReference
+   * @see jakarta.validation.constraints.NotNull
+   * @see User
+   */
   @ManyToOne
   @JoinColumn(name = "user_id")
   @JsonBackReference
   @NotNull(message = "Task owner is mandatory")
   private User taskOwner;
 
+  /**
+   * The list of users assigned to the task. This is a many-to-many relationship
+   * between the task and users, represented by the {@code @ManyToMany}
+   * annotation. The {@code @JoinTable} annotation specifies the join table and
+   * the join columns that map the relationship. The {@code assigned_task_user}
+   * table is used to link tasks and users, with {@code task_id} as the foreign
+   * key to the task and {@code user_id} as the foreign key to the user.
+   *
+   * @see jakarta.persistence.ManyToMany
+   * @see jakarta.persistence.JoinTable
+   * @see jakarta.persistence.JoinColumn
+   * @see User
+   */
   @ManyToMany
   @JoinTable(
       name = "assigned_task_user",
       joinColumns = {@JoinColumn(name = "task_id")},
       inverseJoinColumns = {@JoinColumn(name = "user_id")}
   )
-
   private List<User> assignedUsers;
 
   /**
@@ -186,35 +243,39 @@ public class Task extends Auditable<String> {
 
   @Override
   public String toString() {
-    return "Task{" +
-        "id=" + id +
-        ", name='" + title + '\'' +
-        ", description='" + description + '\'' +
-        ", taskStatus=" + taskStatus +
-        ", taskOwner=" + taskOwner +
-        ", assignedUsers=" + assignedUsers +
-        ", createdBy=" + createdBy +
-        ", createdAt=" + createdAt +
-        ", lastModifiedBy=" + lastModifiedBy +
-        ", lastModifiedAt=" + lastModifiedAt +
-        '}';
+    return "Task{"
+        + "id=" + id
+        + ", name='" + title + '\''
+        + ", description='" + description + '\''
+        + ", taskStatus=" + taskStatus
+        + ", taskOwner=" + taskOwner
+        + ", assignedUsers=" + assignedUsers
+        + ", createdBy=" + getCreatedBy()
+        + ", createdAt=" + getCreatedAt()
+        + ", lastModifiedBy=" + getLastModifiedBy()
+        + ", lastModifiedAt=" + getLastModifiedAt()
+        + '}';
   }
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
     Task task = (Task) o;
-    return getId() == task.getId() && Objects.equals(getTitle(), task.getTitle())
+    return getId() == task.getId() && Objects.equals(getTitle(),
+        task.getTitle())
         && Objects.equals(getDescription(), task.getDescription())
-        && getTaskStatus() == task.getTaskStatus() && Objects.equals(getTaskOwner(),
-        task.getTaskOwner()) && Objects.equals(getAssignedUsers(), task.getAssignedUsers());
+        && getTaskStatus() == task.getTaskStatus() && Objects.equals(
+        getTaskOwner(),
+        task.getTaskOwner()) && Objects.equals(getAssignedUsers(),
+        task.getAssignedUsers());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(getId(), getTitle(), getDescription(), getTaskStatus(), getTaskOwner(),
+    return Objects.hash(getId(), getTitle(), getDescription(), getTaskStatus(),
+        getTaskOwner(),
         getAssignedUsers());
   }
 
@@ -229,10 +290,12 @@ public class Task extends Auditable<String> {
     this.description = builder.description;
     this.taskOwner = builder.taskOwner;
     this.assignedUsers = builder.assignedUsers;
+    this.taskStatus = builder.taskStatus;
   }
 
   /**
-   * Creates a new {@link TaskBuilder} instance for constructing {@link Task} objects.
+   * Creates a new {@link TaskBuilder} instance for constructing {@link Task}
+   * objects.
    *
    * @return a new {@link TaskBuilder} instance
    */
@@ -245,11 +308,42 @@ public class Task extends Auditable<String> {
    */
   public static class TaskBuilder {
 
+    /**
+     * Represents the unique identifier for the task.
+     */
     private int id;
+
+    /**
+     * The title of the task.
+     */
     private String title;
+
+    /**
+     * A detailed description of the task.
+     */
     private String description;
+
+    /**
+     * The current status of the task. This field stores the task's status,
+     * typically represented by an enum {@code TaskStatus}. It can be used to
+     * track the task's progress (e.g., TODO, IN_PROGRESS, COMPLETED).
+     *
+     * @see TaskStatus
+     */
     private TaskStatus taskStatus;
+
+    /**
+     * The user who owns the task.
+     *
+     * @see User
+     */
     private User taskOwner;
+
+    /**
+     * The list of users assigned to the task.
+     *
+     * @see User
+     */
     private List<User> assignedUsers;
 
     /**
@@ -308,7 +402,8 @@ public class Task extends Auditable<String> {
     }
 
     /**
-     * Builds and returns a new {@link Task} instance using the provided values.
+     * Builds and returns a new {@link Task} instance using the provided
+     * values.
      *
      * @return a new {@link Task} object
      */
