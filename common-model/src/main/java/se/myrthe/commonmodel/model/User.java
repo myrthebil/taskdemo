@@ -21,7 +21,7 @@ import java.util.Objects;
  * createdBy and lastModifiedBy, which track changes made by users. The generic parameter
  * {@code String} is used for the auditing identifier.</p>
  *
- * <p>The {@code User} entity is mapped to a database table and is intended
+ * <p>The {@link User} entity is mapped to a database table and is intended
  * to store user-related information.</p>
  *
  * <p>To create a new user, you can use the {@link UserBuilder} for a fluent API:</p>

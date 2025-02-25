@@ -151,11 +151,11 @@ public class TaskRepositoryTest {
     List<User> assignedUsers = new ArrayList<>();
     assignedUsers.add(assignedUser);
     return new Task.TaskBuilder()
-        .setTaskOwner(taskOwner)
-        .setAssignedUsers(assignedUsers)
-        .setTaskStatus(TaskStatus.TODO)
-        .setTitle("Feed slugs")
-        .setDescription("Make sure they don't feed on you")
+        .taskOwner(taskOwner)
+        .assignedUsers(assignedUsers)
+        .taskStatus(TaskStatus.TODO)
+        .title("Feed slugs")
+        .description("Make sure they don't feed on you")
         .build();
   }
 

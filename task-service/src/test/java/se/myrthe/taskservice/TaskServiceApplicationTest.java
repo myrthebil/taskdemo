@@ -102,8 +102,8 @@ public class TaskServiceApplicationTest {
   }
 
   private Task createAndSaveTask(final User user) {
-    final Task task = new Task.TaskBuilder().setTaskOwner(user).setTaskStatus(TaskStatus.TODO)
-        .setTitle("Feed Hedwig").setDescription("She likes mice").build();
+    final Task task = new Task.TaskBuilder().taskOwner(user).taskStatus(TaskStatus.TODO)
+        .title("Feed Hedwig").description("She likes mice").build();
     return taskRepository.save(task);
   }
 
