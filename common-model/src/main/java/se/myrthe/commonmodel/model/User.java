@@ -43,74 +43,128 @@ public class User extends Auditable<String> {
   @GeneratedValue
   @Column(name = "user_id")
   private int id;
+
   @NotBlank(message = "Username is required")
   private String username;
+
   @OneToMany
   @JoinColumn(name = "user_id")
   @JsonManagedReference
   private List<Task> ownedTasks;
+
   @ManyToMany(mappedBy = "assignedUsers")
   private List<Task> assignedTasks;
 
+  /**
+   * Default constructor for JPA.
+   */
   public User() {
   }
 
+  /**
+   * Returns the unique identifier of the user.
+   *
+   * @return the user ID
+   */
   public int getId() {
     return id;
   }
 
+  /**
+   * Sets the unique identifier of the user.
+   *
+   * @param id the new user ID
+   */
   public void setId(final int id) {
     this.id = id;
   }
 
+  /**
+   * Returns the username of the user.
+   *
+   * @return the username
+   */
   public String getUsername() {
     return username;
   }
 
+  /**
+   * Updates the username of the user.
+   *
+   * @param username the new username
+   */
   public void setUsername(final String username) {
     this.username = username;
   }
 
+  /**
+   * Returns the list of {@link Task}s owned by the user.
+   *
+   * @return the list of owned {@link Task}s
+   */
   public List<Task> getOwnedTasks() {
     return ownedTasks;
   }
 
+  /**
+   * Sets the list of {@link Task}s owned by the user.
+   *
+   * @param ownedTasks the new list of owned {@link Task}s
+   */
   public void setOwnedTasks(final List<Task> ownedTasks) {
     this.ownedTasks = ownedTasks;
   }
 
+  /**
+   * Returns the list of {@link Task}s assigned to the user.
+   *
+   * @return the list of assigned {@link Task}s
+   */
   public List<Task> getAssignedTasks() {
     return assignedTasks;
   }
 
+  /**
+   * Sets the list of {@link Task}s assigned to the user.
+   *
+   * @param assignedTasks the new list of assigned {@link Task}s
+   */
   public void setAssignedTasks(final List<Task> assignedTasks) {
     this.assignedTasks = assignedTasks;
   }
 
   @Override
   public String toString() {
-    return "User{" + "createdBy=" + createdBy + ", id=" + id + ", username='" + username + '\''
-        + ", ownedTasks=" + ownedTasks + ", assignedTasks=" + assignedTasks + ", createdAt="
-        + createdAt + ", lastModifiedBy=" + lastModifiedBy + ", lastModifiedAt=" + lastModifiedAt
-        + '}';
+    return "User{" + "id=" + id + ", username='" + username + '\'' +
+        ", ownedTasks=" + ownedTasks + ", assignedTasks=" + assignedTasks +
+        "}";
   }
 
   @Override
   public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
     User user = (User) o;
-    return getId() == user.getId() && Objects.equals(getUsername(), user.getUsername())
-        && Objects.equals(getOwnedTasks(), user.getOwnedTasks()) && Objects.equals(
-        getAssignedTasks(), user.getAssignedTasks());
+    return id == user.id &&
+        Objects.equals(username, user.username) &&
+        Objects.equals(ownedTasks, user.ownedTasks) &&
+        Objects.equals(assignedTasks, user.assignedTasks);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(getId(), getUsername(), getOwnedTasks(), getAssignedTasks());
+    return Objects.hash(id, username, ownedTasks, assignedTasks);
   }
 
+  /**
+   * Private constructor for builder-based instantiation.
+   *
+   * @param builder the {@link UserBuilder} instance
+   */
   private User(final UserBuilder builder) {
     this.id = builder.id;
     this.username = builder.username;
@@ -191,5 +245,4 @@ public class User extends Auditable<String> {
       return new User(this);
     }
   }
-
 }
