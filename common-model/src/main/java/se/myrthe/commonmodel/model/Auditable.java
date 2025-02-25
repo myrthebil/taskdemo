@@ -7,9 +7,7 @@ import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import java.util.Date;
-import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -36,7 +34,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
  * }
  * </pre>
  *
- * @param <T> the type of the user responsible for changes (e.g., String, User
+ * @param <T> the type of the user responsible for changes (e.g. String, User
  *            entity)
  * @author Myrthe Bil
  * @version 1.0
@@ -48,11 +46,12 @@ public abstract class Auditable<T> {
   /**
    * The user who created the entity. This field is automatically populated by
    * the auditing system when the entity is created.
-   * <p>
-   * <T> the type of the user responsible for creating the entity (e.g.,
+   *
+   * <p>&lt;T&gt; the type of the user responsible for creating the entity (e.g.,
    * String, User)
    */
-  @CreatedBy
+  //  @CreatedBy
+  //  TODO: once Spring Security AuditorAware has been implemented, uncomment
   private T createdBy;
 
   /**
@@ -68,11 +67,12 @@ public abstract class Auditable<T> {
   /**
    * The user who last modified the entity. This field is automatically
    * populated by the auditing system when the entity is modified.
-   * <p>
-   * <T> the type of the user responsible for modifying the entity (e.g.,
+   *
+   * <p>&lt;T&gt; the type of the user responsible for modifying the entity (e.g.,
    * String, User)
    */
-  @LastModifiedBy
+  //  @LastModifiedBy
+  //  TODO: once Spring Security AuditorAware has been implemented, uncomment
   private T lastModifiedBy;
 
   /**

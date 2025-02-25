@@ -9,8 +9,8 @@ import se.myrthe.commonmodel.model.User;
 
 /**
  * Repository interface for {@link Task} entities.
- * <p>
- * This interface extends {@link ListCrudRepository} to provide basic CRUD
+ *
+ * <p>This interface extends {@link ListCrudRepository} to provide basic CRUD
  * (Create, Read, Update, Delete) operations for {@link Task} objects.
  * Additionally, it provides custom query methods to find tasks based on
  * specific criteria and delete tasks by their ID. It is marked with the
@@ -37,7 +37,7 @@ public interface TaskRepository extends ListCrudRepository<Task, Integer> {
    *
    * @param assignedUser The user to whom the tasks are assigned.
    * @return A list of {@link Task} objects assigned to the specified
-   * {@link User}.
+   *         {@link User}.
    */
   List<Task> findTasksByAssignedUsers(User assignedUser);
 
