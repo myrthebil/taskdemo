@@ -4,7 +4,7 @@
  * {@link se.myrthe.commonmodel.model.User} within the services.
  *
  * <p>The package includes Interfaces for data access and persistence
- * operation
+ * operations
  *
  * <p>Usage:
  * <pre>
