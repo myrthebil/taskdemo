@@ -11,3 +11,8 @@ updates:
       - "/*/*"      # Matches any first-level directory and its submodules
     schedule:
       interval: "weekly"
+    groups:
+      maven-dependencies:
+        patterns:
+          - "*"
+    open-pull-requests-limit: 10  # Adjust as needed
