@@ -3,8 +3,18 @@
 This repository contains two services for executing CRUD operations on **Tasks** and **Users**.
 
 ## Project Structure
+This project contains the frontend and backend code for TaskDemo, with Docker support for seamless deployment.
 
-This is a **multi-module Maven** setup with the following modules:
+## Prerequisites
+
+Before running the project locally, ensure you have the following installed:
+
+- [Docker](https://www.docker.com/get-started) for containerized deployment
+- [Node.js](https://nodejs.org/) for running the frontend application
+- [Maven](https://maven.apache.org/) for managing backend dependencies
+
+### Backend
+[backend](./backend) contains a **multi-module Maven** setup with the following modules:
 
 - **`common-model`** – Shared models and utilities.
 - **`task-service`** – Manages tasks.
@@ -12,6 +22,21 @@ This is a **multi-module Maven** setup with the following modules:
 
 The parent **`pom.xml`** handles common dependencies and extends `spring-boot-starter-parent` for
 consistent configuration.
+
+### Frontend
+Navigate to the frontend directory:
+
+`cd frontend`
+
+Install frontend dependencies using npm:
+
+`npm install`
+
+Run the frontend development server:
+
+`npm run dev`
+
+The frontend will now be available at http://localhost:3000.
 
 ## Local Development
 
@@ -71,3 +96,11 @@ bash scripts/initial-seed.sh
    ```  
 2. **Verify Adminer at** `http://localhost:8080`.
 3. **Run `initial-seed.sh` to populate test data.**
+
+## Code Quality
+
+Frontend: ESLint is used for linting. Run the following command to check for any code style violations:
+
+`npm run lint`
+
+Backend: The backend uses Checkstyle for code style enforcement. Configuration can be found in the [checkstyle.xml](./backend/checkstyle.xml) file.
