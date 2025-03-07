@@ -75,7 +75,7 @@ Runs the Task API service.
 
 Build the image before running:
 
-    mvn spring-boot:build-image -pl task-service
+    mvn -f backend spring-boot:build-image -pl task-service
 
 ### **4. User Service**
 
@@ -83,9 +83,9 @@ Runs the User API service.
 
 Build the image before running:
 
-    mvn spring-boot:build-image -pl user-service
+    mvn -f backend spring-boot:build-image -pl user-service
 
-5. Seeding Initial Data
+### **5. Seeding Initial Data**
 
 Once all services are running, execute the following command to create sample users and tasks:
 
