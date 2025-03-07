@@ -1,11 +1,13 @@
 # TaskDemo
 
-This repository contains two services for executing CRUD operations on **Tasks** and **Users**.
+This repository contains a frontend and two services to perform CRUD operations on **Tasks** and **Users**.
 
 ## Project Structure
-This project contains the frontend and backend code for TaskDemo, with Docker support for seamless deployment.
 
-## Prerequisites
+The project consists of both the frontend and backend code for TaskDemo, along with Docker support
+for easy deployment.
+
+### Prerequisites
 
 Before running the project locally, ensure you have the following installed:
 
@@ -14,42 +16,47 @@ Before running the project locally, ensure you have the following installed:
 - [Maven](https://maven.apache.org/) for managing backend dependencies
 
 ### Backend
-[backend](./backend) contains a **multi-module Maven** setup with the following modules:
+
+The backend is set up as a **multi-module Maven project**, located in the [backend directoty](./backend), with the
+following modules:
 
 - **`common-model`** – Shared models and utilities.
 - **`task-service`** – Manages tasks.
 - **`user-service`** – Manages users.
 
-The parent **`pom.xml`** handles common dependencies and extends `spring-boot-starter-parent` for
+The parent [pom.xml](./backend/pom.xml) file handles common dependencies and extends `spring-boot-starter-parent` for
 consistent configuration.
 
 ### Frontend
+
+To set up and run the frontend:
+
 Navigate to the frontend directory:
 
-`cd frontend`
+    cd frontend
 
-Install frontend dependencies using npm:
+Install frontend dependencies:
 
-`npm install`
+    npm install
 
-Run the frontend development server:
+Start the development server:
 
-`npm run dev`
+    npm run dev
 
 The frontend will now be available at http://localhost:3000.
 
 ## Local Development
 
-To run and test the services locally, use **`docker-compose.yaml`**, which sets up the following
-components:
+To run and test the services locally, use the provided [docker-compose.yaml](./docker-compose.yaml) file, which sets up the
+following components:
 
 ### **1. PostgreSQL (Version 14)**
 
-A PostgreSQL database with these tables:
+A PostgreSQL database with the following tables:
 
-- `assigned_user_task`
-- `tasks`
-- `users`
+    assigned_user_task
+    tasks
+    users
 
 ### **2. Adminer (Database UI)**
 
@@ -66,41 +73,41 @@ Adminer provides a web interface to interact with the database.
 
 Runs the Task API service.
 
-- **Build the image before running:**
-  ```sh
-  mvn spring-boot:build-image -pl task-service
-  ```  
+Build the image before running:
+
+    mvn spring-boot:build-image -pl task-service
 
 ### **4. User Service**
 
 Runs the User API service.
 
-- **Build the image before running:**
-  ```sh
-  mvn spring-boot:build-image -pl user-service
-  ```  
+Build the image before running:
 
-### **5. Seeding Initial Data**
+    mvn spring-boot:build-image -pl user-service
+
+5. Seeding Initial Data
 
 Once all services are running, execute the following command to create sample users and tasks:
 
-```sh
-bash scripts/initial-seed.sh
-```  
+    bash scripts/initial-seed.sh
 
 ## Running Everything
 
-1. **Start the services:**
-   ```sh
-   docker-compose up -d
-   ```  
-2. **Verify Adminer at** `http://localhost:8080`.
-3. **Run `initial-seed.sh` to populate test data.**
+To start all services and run the project:
+
+Start the services:
+
+    docker-compose up -d
+
+Verify Adminer is running at http://localhost:8080.
+
+Run [initial-seed.sh](./backend/scripts/initial-seed.sh) to populate the database with test data.
 
 ## Code Quality
 
-Frontend: ESLint is used for linting. Run the following command to check for any code style violations:
+Frontend: ESLint is used for linting. To check for any code style violations, run:
 
-`npm run lint`
+    npm run lint
 
-Backend: The backend uses Checkstyle for code style enforcement. Configuration can be found in the [checkstyle.xml](./backend/checkstyle.xml) file.
+Backend: The backend uses Checkstyle for code style enforcement. The configuration can be found in
+the [checkstyle.xml](./backend/checkstyle.xml) file.
