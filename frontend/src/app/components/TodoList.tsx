@@ -83,11 +83,11 @@ const TodoList: React.FC = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-6 bg-pink-100 text-gray-900 rounded-lg shadow-lg">
-      <h1 className="text-2xl font-bold text-center mb-4 text-pink-700">🎀 Todo List</h1>
+    <div className="max-w-2xl mx-auto mt-10 p-6 bg-pink-50 text-gray-900 rounded-lg shadow-lg">
+      <h1 className="text-3xl font-bold text-center mb-6 text-pink-600">🎀 Todo List</h1>
 
       {/* Task Input Form */}
-      <div className="bg-white p-4 rounded-lg shadow mb-6">
+      <div className="bg-white p-6 rounded-lg shadow-md mb-6">
         <input
           ref={titleRef}
           type="text"
@@ -95,7 +95,7 @@ const TodoList: React.FC = () => {
           onChange={(e) => setTitle(e.target.value)}
           onKeyDown={(e) => handleKeyDown(e, "title")}
           placeholder="Enter task title"
-          className="w-full p-3 text-lg bg-gray-100 text-gray-900 border border-pink-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all mb-3"
+          className="w-full p-4 text-lg bg-gray-100 text-gray-900 border border-pink-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all mb-3"
         />
         <textarea
           ref={descRef}
@@ -103,11 +103,11 @@ const TodoList: React.FC = () => {
           onChange={(e) => setDescription(e.target.value)}
           onKeyDown={(e) => handleKeyDown(e, "description")}
           placeholder="Enter task description (optional)"
-          className="w-full p-3 text-lg bg-gray-100 text-gray-900 border border-pink-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all mb-3"
+          className="w-full p-4 text-lg bg-gray-100 text-gray-900 border border-pink-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all mb-3"
         />
         <button
           onClick={handleAddTask}
-          className="w-full bg-mustard-500 text-white py-3 rounded-md text-lg font-medium hover:bg-mustard-600 transition"
+          className="w-full bg-yellow-400 text-white py-3 rounded-md text-lg font-medium hover:bg-yellow-500 transition"
         >
           Add Task
         </button>
@@ -123,31 +123,28 @@ const TodoList: React.FC = () => {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 10 }}
-                className="bg-white p-4 rounded-lg shadow flex flex-col gap-2"
+                className="bg-white p-6 rounded-lg shadow-lg flex justify-between items-center gap-4 hover:shadow-2xl transition-all"
               >
-                <div className="flex justify-between items-center">
-                  <h3 className="text-lg font-semibold">{task.title}</h3>
-                  <span className="text-sm font-medium px-2 py-1 rounded bg-pink-500 text-white">
-                    {task.completed ? "Completed" : "Pending"}
-                  </span>
+                <div className="flex-1">
+                  <h3 className="text-xl font-semibold text-pink-600">{task.title}</h3>
+                  {task.description && <p className="text-gray-700 mt-2">{task.description}</p>}
                 </div>
-                {task.description && <p className="text-gray-600">{task.description}</p>}
-                <div className="flex gap-2 mt-2">
+                <div className="flex gap-2 items-center">
                   <button
                     onClick={() => handleToggleComplete(task.id)}
-                    className="bg-mustard-500 text-white px-3 py-1 rounded-md hover:bg-mustard-600 transition"
+                    className="bg-yellow-400 text-white px-4 py-2 rounded-md hover:bg-yellow-500 transition"
                   >
                     Mark as Completed
                   </button>
                   <button
                     onClick={() => handleEditTask(task.id)}
-                    className="bg-pink-500 text-white px-3 py-1 rounded-md hover:bg-pink-600 transition"
+                    className="bg-pink-500 text-white px-4 py-2 rounded-md hover:bg-pink-600 transition"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDeleteTask(task.id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition"
+                    className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
                   >
                     Delete 🗑️
                   </button>
@@ -162,8 +159,8 @@ const TodoList: React.FC = () => {
       <AnimatePresence>
         {completedTasks.length > 0 && (
           <>
-            <hr className="border-pink-400 my-6" />
-            <h2 className="text-center text-pink-700 mb-3">✅ Completed Tasks</h2>
+            <hr className="border-pink-400 my-8" />
+            <h2 className="text-center text-pink-600 text-2xl mb-3">✅ Completed Tasks</h2>
             <ul className="space-y-4">
               {completedTasks.map((task) => (
                 <motion.li
@@ -171,18 +168,26 @@ const TodoList: React.FC = () => {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
-                  className="bg-white p-4 rounded-lg shadow flex flex-col gap-2 opacity-70 line-through"
+                  className="bg-white p-6 rounded-lg shadow-lg flex justify-between items-center gap-4 opacity-50 line-through"
                 >
-                  <div className="flex justify-between items-center">
-                    <h3 className="text-lg font-semibold">{task.title}</h3>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-semibold text-pink-600">{task.title}</h3>
+                    {task.description && <p className="text-gray-700 mt-2">{task.description}</p>}
+                  </div>
+                  <div className="flex gap-2 items-center">
                     <button
                       onClick={() => handleToggleComplete(task.id)}
-                      className="bg-pink-500 text-white px-3 py-1 rounded-md hover:bg-pink-600 transition"
+                      className="bg-pink-500 text-white px-4 py-2 rounded-md hover:bg-pink-600 transition"
                     >
                       Move Back
                     </button>
+                    <button
+                      onClick={() => handleDeleteTask(task.id)}
+                      className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
+                    >
+                      Delete 🗑️
+                    </button>
                   </div>
-                  {task.description && <p className="text-gray-600">{task.description}</p>}
                 </motion.li>
               ))}
             </ul>
