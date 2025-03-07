@@ -22,7 +22,7 @@ services:
       - "8080:8080"
 
   task-service:
-    # build the image first using `mvn clean spring-boot:build-image -pl task-service`
+    # build the image first using `cd backend && mvn clean spring-boot:build-image -pl task-service`
     image: docker.io/library/task-service:1.0.0
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/mydatabase
@@ -31,7 +31,7 @@ services:
     ports:
       - "8082:8080"
 
-  # build the image first using `mvn clean spring-boot:build-image -pl user-service`
+  # build the image first using `cd backend && mvn clean spring-boot:build-image -pl user-service`
   user-service:
     image: docker.io/library/user-service:1.0.0
     environment:
